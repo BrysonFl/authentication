@@ -15,6 +15,7 @@ public class UserEntity {
 
     @Id
     private BigInteger id;
+    private String documentNumber;
     private String name;
     private String lastname;
     private LocalDate dateBirthday;

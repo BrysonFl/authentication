@@ -16,4 +16,8 @@ public class UserUseCase implements IUserUseCase {
                 .switchIfEmpty(repository.save(user));
     }
 
+    @Override
+    public Mono<User> findByIdentificationNumber(String identificationNumber) {
+        return repository.findByDocumentNumber(identificationNumber);
+    }
 }

@@ -3,12 +3,15 @@ package co.com.pragma.model.user;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
 
 @Getter
 @Setter
 public class User {
 
+    private BigInteger id;
+    private String documentNumber;
     private String name;
     private String lastname;
     private LocalDate dateBirthday;

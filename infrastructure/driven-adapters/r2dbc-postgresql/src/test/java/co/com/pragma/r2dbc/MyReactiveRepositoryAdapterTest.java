@@ -10,10 +10,10 @@ import org.reactivecommons.utils.ObjectMapper;
 class MyReactiveRepositoryAdapterTest {
 
     @InjectMocks
-    MyReactiveRepositoryAdapter repositoryAdapter;
+    UserReactiveRepositoryAdapter repositoryAdapter;
 
     @Mock
-    MyReactiveRepository repository;
+    UserReactiveRepository repository;
 
     @Mock
     ObjectMapper mapper;

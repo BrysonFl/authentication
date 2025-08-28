@@ -12,9 +12,9 @@ import reactor.core.publisher.Mono;
 import java.math.BigInteger;
 
 @Repository
-public class MyReactiveRepositoryAdapter extends ReactiveAdapterOperations<User, UserEntity, BigInteger, MyReactiveRepository> implements UserRepository {
+public class UserReactiveRepositoryAdapter extends ReactiveAdapterOperations<User, UserEntity, BigInteger, UserReactiveRepository> implements UserRepository {
 
-    public MyReactiveRepositoryAdapter(MyReactiveRepository repository, ObjectMapper mapper) {
+    public UserReactiveRepositoryAdapter(UserReactiveRepository repository, ObjectMapper mapper) {
         super(repository, mapper, d -> mapper.map(d, User.class));
     }
 
@@ -28,6 +28,12 @@ public class MyReactiveRepositoryAdapter extends ReactiveAdapterOperations<User,
     @Override
     public Mono<User> findByEmail(String email) {
         return repository.findByEmail(email)
+                .flatMap(entity -> Mono.just(toData(entity)));
+    }
+
+    @Override
+    public Mono<User> findByDocumentNumber(String documentNumber) {
+        return repository.findByDocumentNumber(documentNumber)
                 .flatMap(entity -> Mono.just(toData(entity)));
     }
 }
