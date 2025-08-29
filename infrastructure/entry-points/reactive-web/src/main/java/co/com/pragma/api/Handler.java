@@ -25,8 +25,8 @@ public class Handler {
         return serverRequest.bodyToMono(CreateUserDTO.class)
             .flatMap(validationUtil::validate)
             .flatMap(dto -> userUseCase.saveUser(mapper.toUser(dto)))
-            .flatMap(user -> ServerResponse.created(URI.create("")).bodyValue(mapper.toUserDTO(user))
-            .onErrorResume(error -> ServerResponse.badRequest().bodyValue(error)));
+            .flatMap(user -> ServerResponse.created(URI.create("")).bodyValue(mapper.toUserDTO(user)))
+            .onErrorResume(error -> ServerResponse.badRequest().bodyValue(error));
     }
 
     public Mono<ServerResponse> findByIdentificationNumber(ServerRequest serverRequest) {

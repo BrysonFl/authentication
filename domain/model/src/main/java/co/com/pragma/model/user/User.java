@@ -1,8 +1,6 @@
 package co.com.pragma.model.user;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
@@ -10,6 +8,8 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     private BigInteger id;
