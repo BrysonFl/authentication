@@ -2,12 +2,14 @@ package co.com.pragma.model.user;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
 
 @Getter
 @Setter
+@ToString
 public class User {
 
     private BigInteger id;

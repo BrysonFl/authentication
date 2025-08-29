@@ -11,9 +11,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import static org.mockito.ArgumentMatchers.any;
+import java.math.BigInteger;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-import static reactor.core.publisher.Mono.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserUseCaseTest {
@@ -24,29 +25,79 @@ class UserUseCaseTest {
     @InjectMocks
     private UserUseCase userUseCase;
 
-    //private User user;
+    private User user;
 
-    /*@BeforeEach
+    @BeforeEach
     void init() {
         user = new User();
+        user.setId(BigInteger.ONE);
+        user.setDocumentNumber("1");
         user.setEmail("test@test.com");
-    }*/
+    }
 
     @Test
-    void shouldReturnErrorWhenEmailAlreadyExists() {
-        User user = new User();
-        user.setEmail("test@test.com");
-
-        Mono<User> userMono = Mono.just(user);
-        when(repository.findByEmail(anyString())).thenReturn(user);
-        //when(userUseCase.saveUser(user)).thenReturn(userMono);
+    void testEmailAlreadyExists() {
+        when(repository.findByEmail(anyString())).thenReturn(Mono.just(user));
 
         StepVerifier.create(userUseCase.saveUser(user))
                 .expectError()
                 .verify();
 
-        //verify(repository, times(1)).findByEmail(user.getEmail());
-        //verify(repository, never()).save(any());
+        verify(repository, times(1)).findByEmail(user.getEmail());
+        verify(repository, never()).save(any());
+    }
+
+    @Test
+    void testEmailDoesntExist() {
+        user.setBaseSalary(1);
+        when(repository.findByEmail(anyString())).thenReturn(Mono.empty());
+        when(repository.save(any())).thenReturn(Mono.just(user));
+
+        StepVerifier.create(userUseCase.saveUser(user))
+                .assertNext(savedUser -> assertEquals(user, savedUser))
+                .verifyComplete();
+
+        verify(repository, times(1)).findByEmail(user.getEmail());
+        verify(repository, times(1)).save(any());
+    }
+
+    @Test
+    void testValidBaseSalary() {
+        user.setBaseSalary(-1);
+        when(repository.findByEmail(anyString())).thenReturn(Mono.empty());
+
+        StepVerifier.create(userUseCase.saveUser(user))
+                .expectErrorMatches(throwable -> throwable.getMessage().contains("Valida el campo salario base"))
+                .verify();
+
+        verify(repository, times(1)).findByEmail(user.getEmail());
+        verify(repository, never()).save(any());
+    }
+
+    @Test
+    void testMajorBaseSalary() {
+        user.setBaseSalary(15000001);
+        when(repository.findByEmail(anyString())).thenReturn(Mono.empty());
+
+        StepVerifier.create(userUseCase.saveUser(user))
+                .expectErrorMatches(throwable -> throwable.getMessage().contains("Valida el campo salario base"))
+                .verify();
+
+        verify(repository, times(1)).findByEmail(user.getEmail());
+        verify(repository, never()).save(any());
+    }
+
+    @Test
+    void testFindIdentificationNumber() {
+        String dni = "1";
+
+        when(repository.findByDocumentNumber(anyString())).thenReturn(Mono.just(user));
+
+        StepVerifier.create(userUseCase.findByIdentificationNumber(dni))
+                .assertNext(userFound -> assertEquals(user, userFound))
+                .verifyComplete();
+
+        verify(repository, times(1)).findByDocumentNumber(user.getDocumentNumber());
     }
 
 }

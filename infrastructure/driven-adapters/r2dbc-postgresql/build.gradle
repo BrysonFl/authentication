@@ -1,3 +1,11 @@
+
+
+tasks.jacocoTestReport {
+    doFirst {
+        delete layout.buildDirectory.dir("reports/jacocoHtml")
+    }
+}
+
 dependencies {
     implementation project(':model')
     implementation 'org.springframework:spring-context'

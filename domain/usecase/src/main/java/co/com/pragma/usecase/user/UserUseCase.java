@@ -14,13 +14,12 @@ public class UserUseCase implements IUserUseCase {
         return repository.findByEmail(user.getEmail())
             .flatMap(data -> Mono.error(new RuntimeException("El correo " + data.getEmail() + " ya existe en el sistema")))
             .cast(User.class)
-            .flatMap(data -> {
+            .switchIfEmpty(Mono.defer(() -> {
                 if (user.getBaseSalary() < 0 || user.getBaseSalary() > 15000000)
-                    return Mono.error(() -> new RuntimeException("Valida el campo salario base, esta fuera de los rangos permitidos"));
+                    return Mono.error(new RuntimeException("Valida el campo salario base, esta fuera de los rangos permitidos"));
 
-                return Mono.just(user);
-            })
-            .switchIfEmpty(repository.save(user));
+                return repository.save(user);
+            }));
     }
 
     @Override
