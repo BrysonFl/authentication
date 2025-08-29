@@ -7,4 +7,5 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.6.3'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
     implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.8.11")
+    implementation("jakarta.validation:jakarta.validation-api:3.1.1")
 }
