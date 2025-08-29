@@ -3,6 +3,7 @@ package co.com.pragma.api;
 import co.com.pragma.api.dto.CreateUserDTO;
 import co.com.pragma.api.dto.UserDTO;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -13,10 +14,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.reactive.function.server.*;
-
-import static org.springframework.web.reactive.function.server.RequestPredicates.*;
-import static org.springframework.web.reactive.function.server.RouterFunctions.nest;
-import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 @Configuration
 public class RouterRest {
@@ -29,6 +26,7 @@ public class RouterRest {
             beanClass = Handler.class,
             beanMethod = "save",
             operation = @Operation(
+                operationId = "save",
                 summary = "Create a user",
                 requestBody = @RequestBody(
                     required = true,
@@ -43,6 +41,28 @@ public class RouterRest {
                     @ApiResponse(
                         responseCode = "400",
                         description = "Bad request"
+                    )
+                }
+            )
+        ),
+        @RouterOperation(
+            path = "/api/v1/usuarios/identification",
+            method = RequestMethod.GET,
+            beanClass = Handler.class,
+            beanMethod = "findByIdentificationNumber",
+            operation = @Operation(
+                operationId = "findByIdentificationNumber",
+                summary = "Find user by dni",
+                parameters = {
+                    @Parameter(
+                        name = "identification"
+                    )
+                },
+                responses = {
+                    @ApiResponse(
+                        responseCode = "200",
+                        description = "User found",
+                        content = @Content(schema = @Schema(implementation = UserDTO.class))
                     )
                 }
             )

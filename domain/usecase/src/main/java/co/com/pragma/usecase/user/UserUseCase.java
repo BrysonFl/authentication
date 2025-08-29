@@ -2,6 +2,8 @@ package co.com.pragma.usecase.user;
 
 import co.com.pragma.model.user.User;
 import co.com.pragma.model.user.gateways.UserRepository;
+import co.com.pragma.usecase.user.exceptions.BusinessValidationException;
+import co.com.pragma.usecase.user.exceptions.ExistUserException;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 
@@ -12,11 +14,11 @@ public class UserUseCase implements IUserUseCase {
 
     public Mono<User> saveUser(User user) {
         return repository.findByEmail(user.getEmail())
-            .flatMap(data -> Mono.error(new RuntimeException("El correo " + data.getEmail() + " ya existe en el sistema")))
+            .flatMap(data -> Mono.error(new ExistUserException("El correo " + data.getEmail() + " ya existe en el sistema")))
             .cast(User.class)
             .switchIfEmpty(Mono.defer(() -> {
                 if (user.getBaseSalary() < 0 || user.getBaseSalary() > 15000000)
-                    return Mono.error(new RuntimeException("Valida el campo salario base, esta fuera de los rangos permitidos"));
+                    return Mono.error(new BusinessValidationException("Valida el campo salario base, esta fuera de los rangos permitidos"));
 
                 return repository.save(user);
             }));

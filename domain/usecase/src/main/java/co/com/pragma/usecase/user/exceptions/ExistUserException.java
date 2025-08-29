@@ -1,4 +1,4 @@
-package co.com.pragma.api.exceptions;
+package co.com.pragma.usecase.user.exceptions;
 
 public class ExistUserException extends RuntimeException {
     public ExistUserException(String message) {

@@ -1,5 +1,6 @@
 package co.com.pragma.api.util;
 
+import co.com.pragma.api.exceptions.RequiredFieldsException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class ValidationUtil<T> {
         Set<ConstraintViolation<T>> violations = validator.validate(t);
 
         if (!violations.isEmpty())
-            return Mono.error(() -> new RuntimeException(violations.iterator().next().getMessage()));
+            return Mono.error(() -> new RequiredFieldsException(violations.iterator().next().getMessage()));
 
         return Mono.just(t);
     }
