@@ -2,6 +2,7 @@ package co.com.pragma.r2dbc.entity;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.math.BigInteger;
@@ -23,5 +24,8 @@ public class UserEntity {
     private String phone;
     private String email;
     private Integer baseSalary;
+
+    @Column("id_role")
+    private Integer role;
 
 }

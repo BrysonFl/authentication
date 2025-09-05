@@ -27,7 +27,7 @@ public class Handler {
     public Mono<ServerResponse> save(ServerRequest serverRequest) {
         return serverRequest.bodyToMono(CreateUserDTO.class)
             .doOnNext(dto -> logger.logInfo("Request entry {}", dto))
-            .flatMap(validationUtil::validate)
+            .doOnNext(validationUtil::validate)
             .flatMap(dto -> userUseCase.saveUser(mapper.toUser(dto)))
             .flatMap(user -> ServerResponse.created(URI.create("")).bodyValue(mapper.toUserDTO(user)));
     }
