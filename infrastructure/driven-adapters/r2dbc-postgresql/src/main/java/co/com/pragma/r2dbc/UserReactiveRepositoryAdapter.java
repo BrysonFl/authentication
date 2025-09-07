@@ -21,10 +21,7 @@ public class UserReactiveRepositoryAdapter extends ReactiveAdapterOperations<Use
     @Override
     @Transactional
     public Mono<User> save(User user) {
-        UserEntity userEntity = toEntity(user);
-        userEntity.setRole(1);
-
-        return repository.save(userEntity)
+        return repository.save(toEntity(user))
             .flatMap(entity -> Mono.just(toData(entity)));
     }
 

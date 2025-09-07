@@ -8,8 +8,6 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @ToString
-@AllArgsConstructor
-@NoArgsConstructor
 public class User {
 
     private BigInteger id;
@@ -21,5 +19,6 @@ public class User {
     private String phone;
     private String email;
     private Integer baseSalary;
+    private Integer role;
 
 }
