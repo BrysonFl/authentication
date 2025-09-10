@@ -1,5 +1,6 @@
 package co.com.pragma.usecase.user;
 
+import co.com.pragma.model.passwordencoder.gateways.PasswordEncoderRepository;
 import co.com.pragma.model.user.User;
 import co.com.pragma.model.user.gateways.LoggerGateway;
 import co.com.pragma.model.user.gateways.UserRepository;
@@ -14,6 +15,7 @@ public class UserUseCase implements IUserUseCase {
     private final UserRepository repository;
 
     private final LoggerGateway logger;
+    private final PasswordEncoderRepository passwordEncoderRepository;
 
     public Mono<User> saveUser(User user) {
         return repository.findByEmail(user.getEmail())
@@ -25,9 +27,9 @@ public class UserUseCase implements IUserUseCase {
                     return Mono.error(new BusinessValidationException("Valida el campo salario base, esta fuera de los rangos permitidos"));
                 }
 
+                user.setPassword(passwordEncoderRepository.passwordEncoder(user.getPassword()));
                 return repository.save(user);
-            }))
-            .onErrorResume(ex -> Mono.error(new RuntimeException("Error al registrar el usuario: " + ex.getMessage())));
+            }));
     }
 
     @Override

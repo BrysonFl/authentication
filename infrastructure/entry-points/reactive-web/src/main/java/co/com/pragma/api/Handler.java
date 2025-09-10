@@ -37,4 +37,8 @@ public class Handler {
                 .flatMap(user -> ServerResponse.ok().bodyValue(mapper.toUserDTO(user)));
     }
 
+    public Mono<ServerResponse> login(ServerRequest serverRequest) {
+        return
+    }
+
 }

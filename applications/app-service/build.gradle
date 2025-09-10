@@ -10,6 +10,8 @@ tasks.test {
 apply plugin: 'org.springframework.boot'
 
 dependencies {
+	implementation project(':security')
+	implementation project(':password-encoder')
 	implementation project(':logger')
 	implementation project(':reactive-web')
 	implementation 'org.reactivecommons.utils:object-mapper:0.1.0'

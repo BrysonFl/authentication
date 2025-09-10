@@ -20,5 +20,6 @@ public class User {
     private String email;
     private Integer baseSalary;
     private Integer role;
+    private String password;
 
 }

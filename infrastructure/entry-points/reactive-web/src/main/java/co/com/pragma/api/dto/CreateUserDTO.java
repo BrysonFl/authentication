@@ -21,5 +21,5 @@ public record CreateUserDTO(
         Integer baseSalary,
         @NotNull(message = "El campo rol no debe ser nulo")
         @Positive(message = "El campo rol debe tener un valor válido")
-        Integer role) {
+        Integer role, String password) {
 }

@@ -72,6 +72,7 @@ public class RouterRest {
         return RouterFunctions.nest(RequestPredicates.path("/api/v1/usuarios"), RouterFunctions.route()
                 .POST("", handler::save)
                 .GET("{identification}", handler::findByIdentificationNumber)
+                .POST("login", handler::login)
                 .build());
     }
 

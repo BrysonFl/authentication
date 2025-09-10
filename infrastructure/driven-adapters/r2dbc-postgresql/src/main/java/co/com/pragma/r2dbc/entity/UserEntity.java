@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Setter
 @Table("users")
 @ToString
-public class UserEntity {
+public class UserEntity extends User {
 
     @Id
     private BigInteger id;
@@ -35,5 +35,7 @@ public class UserEntity {
 
     @Column("id_role")
     private Integer role;
+
+    private String password;
 
 }
